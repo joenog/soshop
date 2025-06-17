@@ -1,11 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
   background-color: #f1f5f9;
 }
 
 .fadeIn {
-  animation: fadeIn .4s forwards;
+  animation: fadeIn 0.4s forwards;
 }
 
 @keyframes fadeIn {
