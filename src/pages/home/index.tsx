@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
+      if (window.scrollY > 5) {
         setMenuFixed(
           'w-screen flex md:max-w-5xl p-2 fixed top-17 trasition-all opacity-70',
         );
@@ -59,7 +59,7 @@ export default function Home() {
               <strong>Buy</strong> <FaCartPlus />
             </button>
           </div>
-        </section>  
+        </section>
 
         <section className="bg-amber-100 rounded-xl p-2">
           <img

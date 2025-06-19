@@ -10,7 +10,7 @@ export default function Header() {
   const loadingAuth = false;
 
   return (
-    <header className="w-screen flex fixed h-16 bg-zinc-800 items-center justify-center shadow-sm px-4">
+    <header className="w-screen flex fixed h-16 bg-zinc-800 items-center justify-center shadow-sm px-4 z-50">
       <div className="flex items-center w-7xl justify-between">
         <div className="w-40 fadeIn">
           <Link to={'/'}>
