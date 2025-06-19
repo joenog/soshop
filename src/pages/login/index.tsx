@@ -35,6 +35,7 @@ export default function Login() {
           onSubmit={handleSubmit(onSubmit)}
           className="max-w-xl w-full rounded-md bg-white p-4 mt-10 "
         >
+          <h2 className='text-center my-1 text-lg text-zinc-800'>Login</h2>
           <Input 
             type="email"
             placeholder="Enter your email"
@@ -54,8 +55,11 @@ export default function Login() {
             <button type="submit" className='w-full rounded py-1 bg-zinc-800 text-white mt-5 cursor-pointer'>
               Login
             </button>
-      
         </form>
+
+          <Link className='w-full text-center mt-5 cursor-pointer underline text-zinc-500' to={'/register'}>
+              Create an account
+          </Link>
       </div>
     </Container>
   );
