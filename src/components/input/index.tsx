@@ -1,4 +1,4 @@
-import type { RegisterOptions, UseFormRegister } from "react-hook-form"
+import type { RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 interface InputProps {
   type: string;
@@ -9,7 +9,14 @@ interface InputProps {
   rules: RegisterOptions;
 }
 
-export default function Input({ name, placeholder, type, register, rules, error}: InputProps) {
+export default function Input({
+  name,
+  placeholder,
+  type,
+  register,
+  rules,
+  error,
+}: InputProps) {
   return (
     <div>
       <input
@@ -19,7 +26,9 @@ export default function Input({ name, placeholder, type, register, rules, error}
         id={name}
         {...register(name, rules)}
       />
-      {error && <p className="px-2 text-red-400 mb-1 fadeIn text-sm">{error}</p>}
+      {error && (
+        <p className="px-2 text-red-400 mb-1 fadeIn text-sm">{error}</p>
+      )}
     </div>
   );
 }
