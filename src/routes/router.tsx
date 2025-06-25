@@ -6,6 +6,7 @@ import Login from '../pages/login';
 import Register from '../pages/register';
 import Dashboard from '../pages/dashboard';
 import NewProduct from '../pages/dashboard/new';
+import Private from './Private';
 
 const router = createBrowserRouter([
   {
@@ -21,11 +22,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: <Private> <Dashboard /> </Private>,
       },
       {
         path: '/dashboard/new',
-        element: <NewProduct />,
+        element: <Private> <NewProduct /> </Private>,
       },
     ],
   },

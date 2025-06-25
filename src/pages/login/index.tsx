@@ -19,7 +19,7 @@ const schema = z.object({
   password: z.string().min(1, 'The password field is required!'),
 });
 //typagem para o form seguir o esquema
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof schema>;
 
 export default function Login() {
   const navigate = useNavigate();
