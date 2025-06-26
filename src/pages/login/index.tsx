@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Container from '../../components/container';
 import logo from '../../assets/soshop.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ export type FormData = z.infer<typeof schema>;
 
 export default function Login() {
   const navigate = useNavigate();
+  const [errorLogin, setErrorLogin ] = useState('');
   const {
     register,
     handleSubmit,
@@ -51,12 +52,13 @@ export default function Login() {
       })
       .catch((err) => {
         console.error('ERRO AO LOGAR:' + err);
+        setErrorLogin("Email or password is wrong...")
       });
   }
 
   return (
     <Container>
-      <div className="w-full min-h-full flex flex-col justify-center items-center">
+      <div className={`w-full min-h-full flex flex-col justify-center items-center`}>
         <Link to={'/'}>
           <img className="w-64 opacity-60" src={logo} alt="" />
         </Link>
@@ -88,6 +90,7 @@ export default function Login() {
           >
             Login
           </button>
+          <div className=' w-full text-center mt-10 text-red-800'>{errorLogin}</div>
         </form>
 
         <Link

@@ -1,3 +1,13 @@
+import Container from "../../components/container";
+import PainelHeader from "../../components/painelHeader";
+
 export default function Dashboard() {
-  return <h1 className="pt-40">Dashboard</h1>;
+  return (
+    <Container>
+      <PainelHeader />
+      <main>
+
+      </main>
+    </Container>
+  );
 }

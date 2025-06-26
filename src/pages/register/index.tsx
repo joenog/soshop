@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import Container from '../../components/container';
 import logo from '../../assets/soshop.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -27,6 +28,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Register() {
+  const { handleInfouser } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -54,6 +56,11 @@ export default function Register() {
         });
         console.log('CADASTRADO COM SUCESSO!');
         navigate('/dashboard', { replace: true });
+        handleInfouser({
+          name: data.name,
+          email: data.email,
+          uid: user.user.uid,
+        });
       })
       .catch((err) => {
         console.error('ERRO AO CADASTRAR:' + err);
