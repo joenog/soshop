@@ -84,6 +84,7 @@ export default function Register() {
             name="name"
             error={errors.name?.message}
             register={register}
+            autoComplete="current-password"
           />
 
           <Input
@@ -92,6 +93,7 @@ export default function Register() {
             name="email"
             error={errors.email?.message}
             register={register}
+            autoComplete="current-password"
           />
 
           <Input
@@ -100,6 +102,7 @@ export default function Register() {
             name="password"
             error={errors.password?.message}
             register={register}
+            autoComplete="current-password"
           />
 
           <button

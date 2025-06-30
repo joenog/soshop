@@ -8,6 +8,7 @@ interface InputProps {
   register: UseFormRegister<any>;
   error?: string;
   rules?: RegisterOptions;
+  autoComplete?: string;
 }
 
 export default function Input({
@@ -26,6 +27,7 @@ export default function Input({
         type={type}
         id={name}
         {...register(name, rules)}
+        autoComplete={'current-password'}
       />
       {error && (
         <p className="px-2 text-red-400 mb-1 fadeIn text-sm">{error}</p>

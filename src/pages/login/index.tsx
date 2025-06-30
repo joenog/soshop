@@ -23,7 +23,7 @@ export type FormData = z.infer<typeof schema>;
 
 export default function Login() {
   const navigate = useNavigate();
-  const [errorLogin, setErrorLogin ] = useState('');
+  const [errorLogin, setErrorLogin] = useState('');
   const {
     register,
     handleSubmit,
@@ -52,20 +52,22 @@ export default function Login() {
       })
       .catch((err) => {
         console.error('ERRO AO LOGAR:' + err);
-        setErrorLogin("Email or password is wrong...")
+        setErrorLogin('Email or password is wrong...');
       });
   }
 
   return (
     <Container>
-      <div className={`w-full min-h-full flex flex-col justify-center items-center`}>
+      <div
+        className={`w-full min-h-full flex flex-col justify-center items-center`}
+      >
         <Link to={'/'}>
           <img className="w-64 opacity-60" src={logo} alt="" />
         </Link>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="max-w-xl w-full rounded-md bg-white p-4 mt-10 "
+          className="max-w-xl w-full rounded-md bg-white p-4 mt-10"
         >
           <h2 className="text-center my-1 text-lg text-zinc-800">Login</h2>
           <Input
@@ -74,7 +76,12 @@ export default function Login() {
             name="email"
             error={errors.email?.message}
             register={register}
+            autoComplete="current-password"
           />
+
+          <div className=" w-full ml-2 mb-1 text-red-400 text-sm">
+            {errorLogin}
+          </div>
 
           <Input
             type="password"
@@ -82,6 +89,7 @@ export default function Login() {
             name="password"
             error={errors.password?.message}
             register={register}
+            autoComplete="current-password"
           />
 
           <button
@@ -90,7 +98,6 @@ export default function Login() {
           >
             Login
           </button>
-          <div className=' w-full text-center mt-10 text-red-800'>{errorLogin}</div>
         </form>
 
         <Link

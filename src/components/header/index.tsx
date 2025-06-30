@@ -2,7 +2,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/soshop.png';
-import { FiUser, FiLogIn } from 'react-icons/fi';
+import { FiUser, FiLogIn, FiShoppingCart } from 'react-icons/fi';
 import { useLocation } from '../../services/userLocation';
 import { FaLocationArrow } from 'react-icons/fa';
 
@@ -28,7 +28,9 @@ export default function Header() {
                   {!signed ? (
                     <FaLocationArrow />
                   ) : (
-                    <div>{location.city} | {location.zip}</div>
+                    <div>
+                      {location.city} | {location.zip}
+                    </div>
                   )}
                 </div>
               </div>
@@ -37,11 +39,19 @@ export default function Header() {
             )}
           </div>
 
-          <div className="flex items-center text-zinc-100 my-1 px-3">
+          <div className="flex items-center text-zinc-100 my-1 gap-3 px-1">
             {!loadingAuth && signed && (
               <Link to={'/dashboard'}>
                 <div className="flex justify-center rounded-2xl p-1.5 opacity-60 bg-zinc-700">
-                  <FiUser size={22} style={{ strokeWidth: 1 }} />
+                  <FiUser size={22} />
+                </div>
+              </Link>
+            )}
+
+            {!loadingAuth && signed && (
+              <Link to={'/dashboard'}>
+                <div className="flex justify-center rounded-2xl p-1.5 opacity-60 bg-zinc-700">
+                  <FiShoppingCart size={22} />
                 </div>
               </Link>
             )}
@@ -49,7 +59,7 @@ export default function Header() {
             {!loadingAuth && !signed && (
               <Link to={'/login'}>
                 <div className="flex justify-center rounded-2xl p-1.5 opacity-60 bg-zinc-700">
-                  <FiLogIn size={22} style={{ strokeWidth: 1}} />
+                  <FiLogIn size={22} />
                 </div>
               </Link>
             )}
