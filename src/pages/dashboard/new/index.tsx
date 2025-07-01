@@ -1,10 +1,10 @@
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../../context/AuthContext';
 import { FiTrash, FiUpload } from 'react-icons/fi';
 import Container from '../../../components/container';
 import PainelHeader from '../../../components/painelHeader';
-import { useForm } from 'react-hook-form';
 import Input from '../../../components/input';
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
 import { v4 as uuidV4 } from 'uuid';
 import type ImageItemProps from '../../../types/ImageItemProps';
 //import validation
@@ -12,7 +12,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ChangeEvent } from 'react';
 //firebase
-import { storage } from '../../../services/firebase/firebaseConnection';
+import { storage, db } from '../../../services/firebase/firebaseConnection';
+import { collection, addDoc } from 'firebase/firestore';
 import {
   ref,
   uploadBytes,
@@ -106,33 +107,68 @@ export default function New() {
     }
   }
 
-  // data on form
+  // data in the form to sendo to the database
   function onSubmit(data: FormData) {
-    console.log(data);
+    if (carImage.length === 0) {
+      alert('Envie alguma imagem do carro');
+      return;
+    }
+
+    const carListImage = carImage.map((car) => {
+      return {
+        uid: car.uid,
+        name: car.name,
+        url: car.url
+      }
+    })
+    // create a collection and add to the database
+    addDoc(collection(db, "cars"), {
+      name: data.name,
+      category: data.category,
+      descriptiom: data.description,
+      city: data.city,
+      whatsapp: data.whatsapp,
+      price: data.price,
+      quantity: data.quantity,
+      created: new Date(),
+      //about the user
+      owner: user?.name,
+      uid: user?.uid,
+      images: carListImage
+    })
+    .then(() => {
+      reset(); // clean all form fields 
+      setCarImage([]); // crean the array with the cars
+      console.log('NOVO ITEM ADICIONADO')
+    })
+    .catch((err) => {
+      console.error('ERRO AO ADICIONAR: ', err)
+    })
   }
 
   return (
     <Container>
       <PainelHeader />
-      <div className="w-full bg-white p-3 rounded-md flex flex-col sm:flex-row items-center gap-2">
+      <div className="w-full bg-white p-3 mt-12 rounded-md flex flex-col sm:flex-row items-center gap-2">
         <button className="flex flex-col items-center justify-center cursor-pointer p-2 bg-zinc-100 rounded-md w-60 border-1 border-zinc-300">
           <div className="absolute">
             <FiUpload size={30} color="gray" />
           </div>
           <div>
             <input
-              className="text-transparent w-full h-32 cursor-pointer"
+              className="text-transparent w-full h-26 min-w-60 cursor-pointer"
               type="file"
               accept="image/*"
               onChange={handleFile}
             />
+            <p className='text-zinc-300'>add Image</p>
           </div>
         </button>
 
         {carImage.map((item) => (
           <div key={item.name} className='w-full flex items-center justify-center relative h-36'>
-            <button onClick={() => handleDeleteImage(item)} className='absolute cursor-pointer bg-red-50 p-1 rounded-md'>
-              <FiTrash size={24} color='red' />
+            <button onClick={() => handleDeleteImage(item)} className='absolute cursor-pointer bg-red-50 p-2 rounded-md'>
+              <FiTrash size={20} color='red' />
             </button>
 
             <img
@@ -144,21 +180,33 @@ export default function New() {
 
       <div className="w-full flex flex-col items-center gap-2  p-3 rounded-md bg-white mt-2 mb-10">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <p className="mx-1 mt-3 text-zinc-900">Product Name</p>
-            <Input
-              type="text"
-              name="name"
-              register={register}
-              error={errors.name?.message}
-              placeholder="Iphone 13 PRO"
-            />
+          <div className='grid md:grid-cols-2 gap-2'>
+            <div>
+              <p className="mx-1 mt-3 text-zinc-900">Product Name</p>
+              <Input
+                type="text"
+                name="name"
+                register={register}
+                error={errors.name?.message}
+                placeholder="Iphone 13 PRO"
+              />
+            </div>
+               <div>
+              <p className="mx-1 mt-3 text-zinc-900">Category</p>
+              <Input
+                type="text"
+                name="category"
+                register={register}
+                error={errors.category?.message}
+                placeholder="Smartphones"
+              />
+            </div>
           </div>
 
           <div>
             <p className="mx-1 mt-3 text-zinc-900">Description</p>
             <textarea
-              className="w-full mt-1 outline-none border-1 border-zinc-200 rounded-md indent-2"
+              className="w-full min-h-18 max-h-18 mt-1 outline-none border-1 border-zinc-200 rounded-md indent-2"
               id="description"
               {...register('description')}
               placeholder="New and without signs of use"
@@ -171,29 +219,7 @@ export default function New() {
             )}
           </div>
 
-          <div>
-            <p className="mx-1 mt-3 text-zinc-900">Category</p>
-            <Input
-              type="text"
-              name="category"
-              register={register}
-              error={errors.category?.message}
-              placeholder="Smartphones"
-            />
-          </div>
-
           <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p className="mx-1 mt-3 text-zinc-900">Whatsapp</p>
-              <Input
-                type="text"
-                name="whatsapp"
-                register={register}
-                error={errors.whatsapp?.message}
-                placeholder="73 99814-0001"
-              />
-            </div>
-
             <div>
               <p className="mx-1 mt-3 text-zinc-900">City</p>
               <Input
@@ -202,6 +228,17 @@ export default function New() {
                 register={register}
                 error={errors.city?.message}
                 placeholder="New York"
+              />
+            </div>
+
+            <div>
+              <p className="mx-1 mt-3 text-zinc-900">Whatsapp</p>
+              <Input
+                type="text"
+                name="whatsapp"
+                register={register}
+                error={errors.whatsapp?.message}
+                placeholder="73 99814-0001"
               />
             </div>
           </div>

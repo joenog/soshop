@@ -11,24 +11,26 @@ export default function PainelHeader() {
   }
 
   return (
-    <div className="w-full flex justify-between px-4 items-center bg-zinc-700 text-white rounded-md h-10 shadow-sm">
-      <div className="flex gap-4">
-        <Link
-          className={location.pathname === '/dashboard' ? 'underline' : ''}
-          to={'/dashboard'}
-        >
-          Dashboard
-        </Link>
-        <Link
-          className={location.pathname === '/dashboard/new' ? 'underline' : ''}
-          to={'/dashboard/new'}
-        >
-          New Item
-        </Link>
+    <div className='fixed w-screen pr-8 xl:pr-78'>
+      <div className="flex justify-between px-4 items-center bg-zinc-700 text-white rounded-md h-10 shadow-sm">
+        <div className="flex gap-4">
+          <Link
+            className={location.pathname === '/dashboard' ? 'text-red-200 font-bold' : ''}
+            to={'/dashboard'}
+          >
+            Dashboard
+          </Link>
+          <Link
+            className={location.pathname === '/dashboard/new' ? 'text-red-200 font-bold' : ''}
+            to={'/dashboard/new'}
+          >
+            New Item
+          </Link>
+        </div>
+        <button className="cursor-pointer" onClick={handleLogout} type="button">
+          <FiLogOut />
+        </button>
       </div>
-      <button className="cursor-pointer" onClick={handleLogout} type="button">
-        <FiLogOut />
-      </button>
     </div>
   );
 }
