@@ -11,20 +11,38 @@ export default function PainelHeader() {
   }
 
   return (
-    <div className='fixed w-screen pr-8 xl:pr-78'>
+    <div className="fixed w-screen pr-8 xl:pr-78 z-20">
       <div className="flex justify-between px-4 items-center bg-zinc-700 text-white rounded-md h-10 shadow-sm">
         <div className="flex gap-4">
           <Link
-            className={location.pathname === '/dashboard' ? 'text-red-200 font-bold' : ''}
+            className={
+              location.pathname === '/dashboard' ? 'text-red-200 font-bold' : ''
+            }
             to={'/dashboard'}
           >
             Dashboard
           </Link>
+          <span className="p-[.05px] bg-zinc-950"> </span>
           <Link
-            className={location.pathname === '/dashboard/new' ? 'text-red-200 font-bold' : ''}
+            className={
+              location.pathname === '/dashboard/new'
+                ? 'text-red-200 font-bold'
+                : ''
+            }
             to={'/dashboard/new'}
           >
             New Item
+          </Link>
+          <span className="p-[.05px] bg-zinc-950"> </span>
+          <Link
+            className={
+              location.pathname === '/dashboard/profile'
+                ? 'text-red-200 font-bold'
+                : ''
+            }
+            to={'/dashboard'}
+          >
+            Profile
           </Link>
         </div>
         <button className="cursor-pointer" onClick={handleLogout} type="button">

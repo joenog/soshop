@@ -23,7 +23,7 @@ import {
 
 export default function New() {
   const { user } = useContext(AuthContext);
-  const [ carImage, setCarImage ] = useState<ImageItemProps[]>([]);
+  const [carImage, setCarImage] = useState<ImageItemProps[]>([]);
 
   const schema = z.object({
     name: z.string().min(1, 'The name field is required!'),
@@ -85,9 +85,9 @@ export default function New() {
             uid: uidImage,
             name: currentUid,
             previewUrl: URL.createObjectURL(image),
-            url: downloadUrl
-          }
-          setCarImage((images) => [...images, ImageItem])
+            url: downloadUrl,
+          };
+          setCarImage((images) => [...images, ImageItem]);
         });
       })
       .catch((err) => {
@@ -98,12 +98,12 @@ export default function New() {
   async function handleDeleteImage(item: ImageItemProps) {
     const imagePath = `images/${item.name}/${item.uid}`;
     const imageRef = ref(storage, imagePath);
-    
+
     try {
       await deleteObject(imageRef);
       setCarImage(carImage.filter((car) => car.url !== item.url));
     } catch (err) {
-      console.log("Erro ao deletar", err)
+      console.log('Erro ao deletar', err);
     }
   }
 
@@ -118,11 +118,11 @@ export default function New() {
       return {
         uid: car.uid,
         name: car.name,
-        url: car.url
-      }
-    })
+        url: car.url,
+      };
+    });
     // create a collection and add to the database
-    addDoc(collection(db, "cars"), {
+    addDoc(collection(db, 'cars'), {
       name: data.name,
       category: data.category,
       descriptiom: data.description,
@@ -134,16 +134,16 @@ export default function New() {
       //about the user
       owner: user?.name,
       uid: user?.uid,
-      images: carListImage
+      images: carListImage,
     })
-    .then(() => {
-      reset(); // clean all form fields 
-      setCarImage([]); // crean the array with the cars
-      console.log('NOVO ITEM ADICIONADO')
-    })
-    .catch((err) => {
-      console.error('ERRO AO ADICIONAR: ', err)
-    })
+      .then(() => {
+        reset(); // clean all form fields
+        setCarImage([]); // crean the array with the cars
+        console.log('NOVO ITEM ADICIONADO');
+      })
+      .catch((err) => {
+        console.error('ERRO AO ADICIONAR: ', err);
+      });
   }
 
   return (
@@ -161,26 +161,34 @@ export default function New() {
               accept="image/*"
               onChange={handleFile}
             />
-            <p className='text-zinc-300'>add Image</p>
+            <p className="text-zinc-300">add Image</p>
           </div>
         </button>
 
         {carImage.map((item) => (
-          <div key={item.name} className='w-full flex items-center justify-center relative h-36'>
-            <button onClick={() => handleDeleteImage(item)} className='absolute cursor-pointer bg-red-50 p-2 rounded-md'>
-              <FiTrash size={20} color='red' />
+          <div
+            key={item.name}
+            className="w-full flex items-center justify-center relative h-36"
+          >
+            <button
+              onClick={() => handleDeleteImage(item)}
+              className="absolute cursor-pointer bg-red-50 p-2 rounded-md"
+            >
+              <FiTrash size={20} color="red" />
             </button>
 
             <img
-              className='rounded-md w-full h-36 object-cover'
-              src={item.previewUrl} alt="" />
-            </div>
-          ))}
+              className="rounded-md w-full h-36 object-cover"
+              src={item.previewUrl}
+              alt=""
+            />
+          </div>
+        ))}
       </div>
 
       <div className="w-full flex flex-col items-center gap-2  p-3 rounded-md bg-white mt-2 mb-10">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className='grid md:grid-cols-2 gap-2'>
+          <div className="grid md:grid-cols-2 gap-2">
             <div>
               <p className="mx-1 mt-3 text-zinc-900">Product Name</p>
               <Input
@@ -191,7 +199,7 @@ export default function New() {
                 placeholder="Iphone 13 PRO"
               />
             </div>
-               <div>
+            <div>
               <p className="mx-1 mt-3 text-zinc-900">Category</p>
               <Input
                 type="text"

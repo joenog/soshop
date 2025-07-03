@@ -1,16 +1,59 @@
-import { FiSearch } from 'react-icons/fi';
-import Container from '../../components/container';
-import { FaCartPlus } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { FiSearch, FiShoppingCart } from 'react-icons/fi';
+import Container from '../../components/container';
+import type ImageItemProps from '../../types/ImageItemProps';
+//firebase
+import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { db } from '../../services/firebase/firebaseConnection';
+import { Link } from 'react-router-dom';
+import toReal from '../../utils/toReal';
+
+interface ProductProps {
+  id: string;
+  name: string;
+  city: string;
+  price: number;
+  description: string;
+  images: ImageItemProps[];
+  uid: string;
+}
 
 export default function Home() {
   const [menuFixed, setMenuFixed] = useState('');
+  const [product, setProduct] = useState<ProductProps[]>([]);
+  const [ loadImages, setLoadImages] = useState<string[]>([]);
 
+  useEffect(() => {
+    function loadProducts() {
+      const carRef = collection(db, 'cars');
+      const queryRef = query(carRef, orderBy('created', 'desc'));
+
+      getDocs(queryRef).then((snapshot) => {
+        const listProducts = [] as ProductProps[];
+
+        snapshot.forEach((doc) => {
+          listProducts.push({
+            id: doc.id,
+            name: doc.data().name,
+            city: doc.data().city,
+            price: doc.data().price,
+            description: doc.data().description,
+            images: doc.data().images,
+            uid: doc.data().uid,
+          });
+        });
+        setProduct(listProducts);
+      });
+    }
+
+    loadProducts();
+  }, []);
+  //field search animation
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 5) {
         setMenuFixed(
-          'w-screen flex md:max-w-5xl p-2 fixed top-17 trasition-all opacity-70',
+          'w-screen justify-center flex md:max-w-5xl p-2 fixed top-17 opacity-50 px-4',
         );
       } else {
         setMenuFixed('');
@@ -22,18 +65,24 @@ export default function Home() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [menuFixed]);
+  }, []);
+  // prevent layout shift
+  function handleImageLoad(id: string) {
+    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id])
+  }
 
   return (
     <Container>
       <section className={'flex flex-row justify-center mx-auto'}>
         <div
-          className={`flex w-screen justify-center transition-all` + menuFixed}
+          className={
+            `flex w-screen justify-center transition-opacity` + menuFixed
+          }
         >
           <input
-            className="w-full md:max-w-4xl border-none outline-0 bg-zinc-50 rounded-md p-2"
+            className="w-full md:max-w-4xl outline-0 bg-zinc-50 rounded-md p-2 border border-zinc-200"
             type="text"
-            placeholder="O que você procura?"
+            placeholder=" What are you looking for?"
           />
           <button
             className="bg-red-400 px-2 rounded-md cursor-pointer"
@@ -45,101 +94,34 @@ export default function Home() {
       </section>
 
       <main className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 my-8">
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-500 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
-
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
-
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
-
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
-
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
-
-        <section className="bg-amber-100 rounded-xl p-2">
-          <img
-            className="w-full bg-cover bg-amber-50 rounded-md h-50"
-            src="/soshop-fav.png"
-            alt=""
-          />
-
-          <p className="text-xl my-2 mx-2">Nome do Produto</p>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <p>R$ 89,68</p>
-            <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-              <strong>Buy</strong> <FaCartPlus />
-            </button>
-          </div>
-        </section>
+        {product.map((item) => (
+            <section key={item.id} className="bg-white rounded-xl p-2 shadow-sm">
+              <Link key={item.id} to={`/product/${item.id}`}>
+                <div 
+                  className='w-full h-52 rounded-md bg-zinc-100'
+                  style={{ display: loadImages.includes(item.id) ? 'none' : 'block' }}
+                >
+                </div>
+                <img
+                  className="w-full h-52 object-cover rounded-md fadeIn"
+                  src={item.images[0].url}
+                  alt={`Imagem do carro ${item.name}`}
+                  style={{ display: loadImages.includes(item.id) ? 'block' : 'none'}}
+                  onLoad={() => handleImageLoad(item.id)}
+                />
+              </Link>
+              <p className="text-lg my-2 mx-2 font-bold">{item.name}</p>
+              <p className="text-sm my-2 mx-2 text-zinc-700">{item.city}</p>
+              <div className="flex items-center justify-between mt-4 mx-2">
+                <p>{toReal(item.price)}</p>
+              <Link key={item.id} to={`/product/${item.id}`}>
+                <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-500 cursor-pointer">
+                  <strong>Buy</strong> <FiShoppingCart />
+                </button>
+              </Link>
+              </div>
+            </section>
+        ))}
       </main>
     </Container>
   );
