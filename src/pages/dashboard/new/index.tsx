@@ -149,7 +149,7 @@ export default function New() {
   return (
     <Container>
       <PainelHeader />
-      <div className="w-full bg-white p-3 mt-12 rounded-md flex flex-col sm:flex-row items-center gap-2">
+      <div className="w-full bg-red-100 p-3 mt-12 rounded-md flex flex-col sm:flex-row items-center gap-2">
         <button className="flex flex-col items-center justify-center cursor-pointer p-2 bg-zinc-100 rounded-md w-60 border-1 border-zinc-300">
           <div className="absolute">
             <FiUpload size={30} color="gray" />

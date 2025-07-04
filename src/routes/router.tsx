@@ -7,6 +7,7 @@ import Register from '../pages/register';
 import Dashboard from '../pages/dashboard';
 import NewProduct from '../pages/dashboard/new';
 import Private from './Private';
+import Profile from '../pages/dashboard/profile';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
           </Private>
         ),
       },
+      {
+        path: '/dashboard/profile',
+        element: (
+          <Private>
+            <Profile />
+          </Private>
+        )
+      }
     ],
   },
   {
