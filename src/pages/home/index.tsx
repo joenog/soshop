@@ -8,11 +8,10 @@ import { db } from '../../services/firebase/firebaseConnection';
 import { Link } from 'react-router-dom';
 import toReal from '../../utils/toReal';
 
-
 export default function Home() {
   const [menuFixed, setMenuFixed] = useState('');
   const [product, setProduct] = useState<ProductProps[]>([]);
-  const [ loadImages, setLoadImages] = useState<string[]>([]);
+  const [loadImages, setLoadImages] = useState<string[]>([]);
 
   useEffect(() => {
     function loadProducts() {
@@ -59,7 +58,7 @@ export default function Home() {
   }, []);
   // prevent layout shift
   function handleImageLoad(id: string) {
-    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id])
+    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id]);
   }
 
   return (
@@ -88,16 +87,19 @@ export default function Home() {
         {product.map((item) => (
           <section key={item.id} className="bg-white rounded-xl p-2 shadow-sm">
             <Link to={`/product/${item.id}`}>
-              <div 
-                className='w-full h-52 rounded-md bg-zinc-100'
-                style={{ display: loadImages.includes(item.id) ? 'none' : 'block' }}
-              >
-              </div>
+              <div
+                className="w-full h-52 rounded-md bg-zinc-100"
+                style={{
+                  display: loadImages.includes(item.id) ? 'none' : 'block',
+                }}
+              ></div>
               <img
                 className="w-full h-52 object-cover rounded-md fadeIn"
                 src={item.images[0].url}
                 alt={`Imagem do carro ${item.name}`}
-                style={{ display: loadImages.includes(item.id) ? 'block' : 'none'}}
+                style={{
+                  display: loadImages.includes(item.id) ? 'block' : 'none',
+                }}
                 onLoad={() => handleImageLoad(item.id)}
               />
             </Link>
@@ -105,11 +107,11 @@ export default function Home() {
             <p className="text-sm my-2 mx-2 text-zinc-700">{item.city}</p>
             <div className="flex items-center justify-between mt-4 mx-2">
               <p>{toReal(item.price)}</p>
-            <Link to={`/product/${item.id}`}>
-              <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
-                <strong>Buy</strong> <FiShoppingCart />
-              </button>
-            </Link>
+              <Link to={`/product/${item.id}`}>
+                <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
+                  <strong>Buy</strong> <FiShoppingCart />
+                </button>
+              </Link>
             </div>
           </section>
         ))}

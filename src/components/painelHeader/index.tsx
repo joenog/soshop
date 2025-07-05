@@ -15,9 +15,7 @@ export default function PainelHeader() {
       <div className="flex justify-between px-4 items-center bg-zinc-700 text-white rounded-md h-10 shadow-sm">
         <div className="flex gap-4 font-bold">
           <Link
-            className={
-              location.pathname === '/dashboard' ? 'text-red-200' : ''
-            }
+            className={location.pathname === '/dashboard' ? 'text-red-200' : ''}
             to={'/dashboard'}
           >
             Dashboard
@@ -25,9 +23,7 @@ export default function PainelHeader() {
           <span className="p-[.05px] bg-zinc-950"> </span>
           <Link
             className={
-              location.pathname === '/dashboard/new'
-                ? 'text-red-200'
-                : ''
+              location.pathname === '/dashboard/new' ? 'text-red-200' : ''
             }
             to={'/dashboard/new'}
           >
@@ -36,9 +32,7 @@ export default function PainelHeader() {
           <span className="p-[.05px] bg-zinc-950"> </span>
           <Link
             className={
-              location.pathname === '/dashboard/profile'
-                ? 'text-red-200'
-                : ''
+              location.pathname === '/dashboard/profile' ? 'text-red-200' : ''
             }
             to={'/dashboard/profile'}
           >

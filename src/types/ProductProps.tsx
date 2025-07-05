@@ -1,4 +1,4 @@
-import type ImageItemProps from "./ImageItemProps";
+import type ImageItemProps from './ImageItemProps';
 
 export default interface ProductProps {
   id: string;

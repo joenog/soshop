@@ -167,7 +167,7 @@ export default function New() {
 
         {carImage.map((item) => (
           <div
-            key={item.name}
+            key={item.uid}
             className="w-full flex items-center justify-center relative h-36"
           >
             <button
