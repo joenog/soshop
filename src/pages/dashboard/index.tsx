@@ -43,6 +43,8 @@ export default function Dashboard() {
             city: data.city,
             price: data.price,
             description: data.description,
+            whatsapp: data.whatsapp,
+            owner: data.owner,
             images: data.images,
             uid: data.uid,
           });
@@ -88,11 +90,13 @@ export default function Dashboard() {
             className="w-full border border-zinc-200 bg-red-100 rounded-md relative p-2"
           >
             <Link to={`/product/${item.id}`}>
-              <img
-                className="w-full h-52 object-cover rounded-md fadeIn"
-                src={item.images[0].url || '/fallback.jpg'}
-                alt={item.name}
-              />
+              <div className="w-full bg-white">
+                <img
+                  className="w-full h-52 object-contain rounded-md fadeIn"
+                  src={item.images[0].url || '/fallback.jpg'}
+                  alt={item.name}
+                />
+              </div>
               <p className="text-lg my-2 mx-2 font-bold">{item.name}</p>
               <p className="text-sm my-2 mx-2 text-zinc-700">{item.city}</p>
             </Link>

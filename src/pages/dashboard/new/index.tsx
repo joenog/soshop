@@ -125,7 +125,7 @@ export default function New() {
     addDoc(collection(db, 'cars'), {
       name: data.name,
       category: data.category,
-      descriptiom: data.description,
+      description: data.description,
       city: data.city,
       whatsapp: data.whatsapp,
       price: data.price,

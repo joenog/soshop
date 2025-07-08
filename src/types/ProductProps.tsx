@@ -6,6 +6,8 @@ export default interface ProductProps {
   city: string;
   price: number;
   description: string;
+  whatsapp: string;
+  owner: string;
   images: ImageItemProps[];
   uid: string;
 }

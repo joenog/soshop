@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { FiSearch, FiShoppingCart } from 'react-icons/fi';
 import Container from '../../components/container';
 import type ProductProps from '../../types/ProductProps';
+import toReal from '../../utils/toReal';
 //firebase
 import { collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../../services/firebase/firebaseConnection';
 import { Link } from 'react-router-dom';
-import toReal from '../../utils/toReal';
 
 export default function Home() {
   const [menuFixed, setMenuFixed] = useState('');
@@ -28,6 +28,8 @@ export default function Home() {
             city: doc.data().city,
             price: doc.data().price,
             description: doc.data().description,
+            whatsapp: doc.data().whatsapp,
+            owner: doc.data().owner,
             images: doc.data().images,
             uid: doc.data().uid,
           });
@@ -94,7 +96,7 @@ export default function Home() {
                 }}
               ></div>
               <img
-                className="w-full h-52 object-cover rounded-md fadeIn"
+                className="w-full h-52 object-contain rounded-md fadeIn"
                 src={item.images[0].url}
                 alt={`Imagem do carro ${item.name}`}
                 style={{
