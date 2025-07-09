@@ -8,6 +8,7 @@ import Dashboard from '../pages/dashboard';
 import NewProduct from '../pages/dashboard/new';
 import Private from './Private';
 import Profile from '../pages/dashboard/profile';
+import NotFound from '../pages/notflound';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/product/:id',
         element: <ProductDetail />,
+      },
+      {
+        path: '/*',
+        element: <NotFound />,
       },
       {
         path: '/dashboard',
