@@ -28,7 +28,7 @@ export default function Dashboard() {
     }
 
     function loadProducts() {
-      const productRef = collection(db, 'cars');
+      const productRef = collection(db, 'product');
       const queryRef = query(productRef, where('uid', '==', user?.uid));
 
       getDocs(queryRef).then((snapshot) => {
@@ -50,7 +50,6 @@ export default function Dashboard() {
           });
         });
         setProduct(listProducts);
-        console.log(listProducts);
       });
     }
 
@@ -60,7 +59,7 @@ export default function Dashboard() {
   //delete product form my account
   async function handleDeleteProduct(productItem: ProductProps) {
     //remove item from the database
-    const docRef = doc(db, 'cars', productItem.id);
+    const docRef = doc(db, 'product', productItem.id);
     await deleteDoc(docRef);
     //remove images form the storage
     await Promise.all(

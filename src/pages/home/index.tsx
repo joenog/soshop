@@ -4,7 +4,7 @@ import Container from '../../components/container';
 import type ProductProps from '../../types/ProductProps';
 import toReal from '../../utils/toReal';
 //firebase
-import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, getDocs, orderBy, where } from 'firebase/firestore';
 import { db } from '../../services/firebase/firebaseConnection';
 import { Link } from 'react-router-dom';
 
@@ -12,40 +12,78 @@ export default function Home() {
   const [menuFixed, setMenuFixed] = useState('');
   const [product, setProduct] = useState<ProductProps[]>([]);
   const [loadImages, setLoadImages] = useState<string[]>([]);
+  const [ input, setInput ] = useState('');
 
   useEffect(() => {
-    function loadProducts() {
-      const productRef = collection(db, 'cars');
-      const queryRef = query(productRef, orderBy('created', 'desc'));
-
-      getDocs(queryRef).then((snapshot) => {
-        const listProducts = [] as ProductProps[];
-
-        snapshot.forEach((doc) => {
-          listProducts.push({
-            id: doc.id,
-            name: doc.data().name,
-            city: doc.data().city,
-            price: doc.data().price,
-            description: doc.data().description,
-            whatsapp: doc.data().whatsapp,
-            owner: doc.data().owner,
-            images: doc.data().images,
-            uid: doc.data().uid,
-          });
-        });
-        setProduct(listProducts);
-      });
-    }
-
     loadProducts();
   }, []);
+
+    function loadProducts() {
+    const productRef = collection(db, 'product');
+    const queryRef = query(productRef, orderBy('created', 'desc'));
+
+    getDocs(queryRef).then((snapshot) => {
+      const listProducts = [] as ProductProps[];
+
+      snapshot.forEach((doc) => {
+        listProducts.push({
+          id: doc.id,
+          name: doc.data().name,
+          city: doc.data().city,
+          price: doc.data().price,
+          description: doc.data().description,
+          whatsapp: doc.data().whatsapp,
+          owner: doc.data().owner,
+          images: doc.data().images,
+          uid: doc.data().uid,
+        });
+      });
+      setProduct(listProducts);
+    });
+  }
+
+  //handlesearchPorduc
+  async function handleSearchProduct() {
+    if (input === "") {
+      loadProducts()
+      return;
+    }
+
+    setProduct([]);
+    setLoadImages([]);
+    const q = query(collection(db, 'product'),
+    where('name', '>=', input.toUpperCase()),
+    where('name', '<=', input.toUpperCase() + '\uf8ff')
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const listProducts = [] as ProductProps[];
+
+    querySnapshot.forEach((doc) => {
+      listProducts.push({
+        id: doc.id,
+        name: doc.data().name,
+        city: doc.data().city,
+        price: doc.data().price,
+        description: doc.data().description,
+        whatsapp: doc.data().whatsapp,
+        owner: doc.data().owner,
+        images: doc.data().images,
+        uid: doc.data().uid,
+      })
+    })
+
+    setProduct(listProducts);
+
+  }
+
   //field search animation
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 5) {
         setMenuFixed(
-          'w-screen justify-center flex md:max-w-5xl p-2 fixed top-17 opacity-50 px-4',
+          'w-screen justify-center flex md:max-w-5xl p-2 fixed opacity-50 px-4',
         );
       } else {
         setMenuFixed('');
@@ -75,8 +113,11 @@ export default function Home() {
             className="w-full md:max-w-4xl outline-0 bg-zinc-50 rounded-l-md p-2 border border-zinc-200"
             type="text"
             placeholder=" What are you looking for?"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <button
+            onClick={handleSearchProduct}
             className="bg-red-400 px-2 rounded-r-md cursor-pointer"
             type="submit"
           >
@@ -110,7 +151,9 @@ export default function Home() {
             <div className="flex items-center justify-between mt-4 mx-2">
               <p>{toReal(item.price)}</p>
               <Link to={`/product/${item.id}`}>
-                <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
+                <button
+                  className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer"
+                >
                   <strong>Buy</strong> <FiShoppingCart />
                 </button>
               </Link>

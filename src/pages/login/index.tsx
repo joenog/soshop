@@ -45,9 +45,7 @@ export default function Login() {
   //login your account
   function onSubmit(data: FormData) {
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then((user) => {
-        console.log('LOGADO COM SUCESSO:');
-        console.log(user);
+      .then(() => {
         navigate('/dashboard', { replace: true });
       })
       .catch((err) => {

@@ -23,7 +23,7 @@ import {
 
 export default function New() {
   const { user } = useContext(AuthContext);
-  const [carImage, setCarImage] = useState<ImageItemProps[]>([]);
+  const [productImage, setProductImage] = useState<ImageItemProps[]>([]);
 
   const schema = z.object({
     name: z.string().min(1, 'The name field is required!'),
@@ -87,7 +87,7 @@ export default function New() {
             previewUrl: URL.createObjectURL(image),
             url: downloadUrl,
           };
-          setCarImage((images) => [...images, ImageItem]);
+          setProductImage((images) => [...images, ImageItem]);
         });
       })
       .catch((err) => {
@@ -101,7 +101,7 @@ export default function New() {
 
     try {
       await deleteObject(imageRef);
-      setCarImage(carImage.filter((car) => car.url !== item.url));
+      setProductImage(productImage.filter((product) => product.url !== item.url));
     } catch (err) {
       console.log('Erro ao deletar', err);
     }
@@ -109,21 +109,21 @@ export default function New() {
 
   // data in the form to sendo to the database
   function onSubmit(data: FormData) {
-    if (carImage.length === 0) {
-      alert('Envie alguma imagem do carro');
+    if (productImage.length === 0) {
+      alert('Envie alguma imagem do produto');
       return;
     }
 
-    const carListImage = carImage.map((car) => {
+    const productListImage = productImage.map((product) => {
       return {
-        uid: car.uid,
-        name: car.name,
-        url: car.url,
+        uid: product.uid,
+        name: product.name,
+        url: product.url,
       };
     });
     // create a collection and add to the database
-    addDoc(collection(db, 'cars'), {
-      name: data.name,
+    addDoc(collection(db, 'product'), {
+      name: data.name.toUpperCase(),
       category: data.category,
       description: data.description,
       city: data.city,
@@ -134,11 +134,11 @@ export default function New() {
       //about the user
       owner: user?.name,
       uid: user?.uid,
-      images: carListImage,
+      images: productListImage,
     })
       .then(() => {
         reset(); // clean all form fields
-        setCarImage([]); // crean the array with the cars
+        setProductImage([]); // crean the array with the product
         console.log('NOVO ITEM ADICIONADO');
       })
       .catch((err) => {
@@ -165,7 +165,7 @@ export default function New() {
           </div>
         </button>
 
-        {carImage.map((item) => (
+        {productImage.map((item) => (
           <div
             key={item.uid}
             className="w-full flex items-center justify-center relative h-36"

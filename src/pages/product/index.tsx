@@ -20,7 +20,7 @@ export default function ProductDetail() {
     async function loadProduct() {
       if (!id) return;
 
-      const docRef = doc(db, 'cars', id);
+      const docRef = doc(db, 'product', id);
       getDoc(docRef).then((snapshot) => {
         setProduct({
           id: snapshot.id,
