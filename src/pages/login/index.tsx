@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 //
 import { auth } from '../../services/firebase/firebaseConnection';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 const schema = z.object({
   email: z
@@ -47,6 +48,7 @@ export default function Login() {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
         navigate('/dashboard', { replace: true });
+        toast.success("Welcome!")
       })
       .catch((err) => {
         console.error('ERRO AO LOGAR:' + err);

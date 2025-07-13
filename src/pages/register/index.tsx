@@ -15,6 +15,7 @@ import {
   updateProfile,
   signOut,
 } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 const schema = z.object({
   name: z.string().min(6, 'Please enter your full name!'),
@@ -54,13 +55,14 @@ export default function Register() {
         await updateProfile(user.user, {
           displayName: data.name,
         });
-        console.log('CADASTRADO COM SUCESSO!');
+        toast.success(`Welcome`)
         navigate('/dashboard', { replace: true });
         handleInfouser({
           name: data.name,
           email: data.email,
           uid: user.user.uid,
         });
+
       })
       .catch((err) => {
         console.error('ERRO AO CADASTRAR:' + err);

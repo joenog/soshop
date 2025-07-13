@@ -20,6 +20,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
+import toast from 'react-hot-toast';
 
 export default function New() {
   const { user } = useContext(AuthContext);
@@ -60,7 +61,7 @@ export default function New() {
       if (image.type == 'image/png' || image.type === 'image/jpeg') {
         await handleUpload(image);
       } else {
-        alert('envie algo valido');
+        toast.success('Just images...');
         return;
       }
     }
@@ -107,7 +108,7 @@ export default function New() {
     }
   }
 
-  // data in the form to sendo to the database
+  // data in the form to send to the database
   function onSubmit(data: FormData) {
     if (productImage.length === 0) {
       alert('Envie alguma imagem do produto');
@@ -139,7 +140,7 @@ export default function New() {
       .then(() => {
         reset(); // clean all form fields
         setProductImage([]); // crean the array with the product
-        console.log('NOVO ITEM ADICIONADO');
+        toast.success('Product added!');
       })
       .catch((err) => {
         console.error('ERRO AO ADICIONAR: ', err);

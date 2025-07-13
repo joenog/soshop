@@ -17,6 +17,7 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
+import toast from 'react-hot-toast';
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -69,6 +70,7 @@ export default function Dashboard() {
 
         try {
           await deleteObject(imageRef);
+          toast.success("Product removed!")
         } catch (err) {
           console.error('Erro do deletar a imagem do banco de dados', err);
         }
