@@ -55,14 +55,13 @@ export default function Register() {
         await updateProfile(user.user, {
           displayName: data.name,
         });
-        toast.success(`Welcome`)
+        toast.success(`Welcome`);
         navigate('/dashboard', { replace: true });
         handleInfouser({
           name: data.name,
           email: data.email,
           uid: user.user.uid,
         });
-
       })
       .catch((err) => {
         console.error('ERRO AO CADASTRAR:' + err);

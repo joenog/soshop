@@ -12,13 +12,13 @@ export default function Home() {
   const [menuFixed, setMenuFixed] = useState('');
   const [product, setProduct] = useState<ProductProps[]>([]);
   const [loadImages, setLoadImages] = useState<string[]>([]);
-  const [ input, setInput ] = useState('');
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     loadProducts();
   }, []);
 
-    function loadProducts() {
+  function loadProducts() {
     const productRef = collection(db, 'product');
     const queryRef = query(productRef, orderBy('created', 'desc'));
 
@@ -44,16 +44,17 @@ export default function Home() {
 
   //handlesearchPorduc
   async function handleSearchProduct() {
-    if (input === "") {
-      loadProducts()
+    if (input === '') {
+      loadProducts();
       return;
     }
 
     setProduct([]);
     setLoadImages([]);
-    const q = query(collection(db, 'product'),
-    where('name', '>=', input.toUpperCase()),
-    where('name', '<=', input.toUpperCase() + '\uf8ff')
+    const q = query(
+      collection(db, 'product'),
+      where('name', '>=', input.toUpperCase()),
+      where('name', '<=', input.toUpperCase() + '\uf8ff'),
     );
 
     const querySnapshot = await getDocs(q);
@@ -71,11 +72,10 @@ export default function Home() {
         owner: doc.data().owner,
         images: doc.data().images,
         uid: doc.data().uid,
-      })
-    })
+      });
+    });
 
     setProduct(listProducts);
-
   }
 
   //field search animation
@@ -151,9 +151,7 @@ export default function Home() {
             <div className="flex items-center justify-between mt-4 mx-2">
               <p>{toReal(item.price)}</p>
               <Link to={`/product/${item.id}`}>
-                <button
-                  className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer"
-                >
+                <button className="flex items-center gap-2 bg-green-400 py-1 px-3 rounded-md hover:bg-green-300 cursor-pointer">
                   <strong>Buy</strong> <FiShoppingCart />
                 </button>
               </Link>

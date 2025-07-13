@@ -70,7 +70,7 @@ export default function Dashboard() {
 
         try {
           await deleteObject(imageRef);
-          toast.success("Product removed!")
+          toast.success('Product removed!');
         } catch (err) {
           console.error('Erro do deletar a imagem do banco de dados', err);
         }

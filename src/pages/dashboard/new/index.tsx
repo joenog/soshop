@@ -102,7 +102,9 @@ export default function New() {
 
     try {
       await deleteObject(imageRef);
-      setProductImage(productImage.filter((product) => product.url !== item.url));
+      setProductImage(
+        productImage.filter((product) => product.url !== item.url),
+      );
     } catch (err) {
       console.log('Erro ao deletar', err);
     }
